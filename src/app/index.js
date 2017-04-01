@@ -1,0 +1,1 @@
+alert('Bundle works!');
