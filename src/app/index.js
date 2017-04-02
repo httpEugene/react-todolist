@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 
 import { Header } from './components/header/Header';
 import { CategoriesTree } from './components/categories/CategoriesTree';
-// import { CategoriesTree } from './components/categories/CategoriesTree';
+import { TasksList } from './components/tasks/TasksList';
 
 class App extends React.Component {
     render() {
@@ -15,7 +15,7 @@ class App extends React.Component {
                         <CategoriesTree/>
                     </div>
                     <div className="col-md-8">
-                        To-Do List here
+                        <TasksList/>
                     </div>
                 </div>
             </div>
