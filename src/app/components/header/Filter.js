@@ -8,8 +8,15 @@ export class Filter extends React.Component {
         };
 
         return (
-            <div className="pull-right col-xs-9" style={filterStyles}>
-                <input type="search" className="form-control" placeholder="Search"/>
+            <div className="row" style={filterStyles}>
+                <div className="col-md-3 checkbox">
+                    <label className="pull-right">
+                        <input type="checkbox"/> Show done
+                    </label>
+                </div>
+                <div className="col-md-9 col-xs-9">
+                    <input type="search" className="form-control" placeholder="Search"/>
+                </div>
             </div>
         )
     }
