@@ -29,8 +29,8 @@ export class TasksList extends React.Component {
                 </div>
                 <div className="row">
                     <ul className="list-group">
-                        {this.getTasksList().map((task) => <Task task={task}/> )}
-                    </ul>
+                        {this.getTasksList().map((task, i) => <Task key={i} task={task}/> )}
+                    </ul> 
                 </div>
             </div>
         );

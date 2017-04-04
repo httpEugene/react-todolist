@@ -4,6 +4,20 @@ import { render } from 'react-dom';
 import { AddCategory } from './AddCategory';
 
 export class CategoriesTree extends React.Component {
+    constructor() {
+        super();
+        this.state = {
+            tasksVisible: false
+        };
+    }
+    showTasksList() {
+        this.props.tasksVisibility(true);
+    }
+
+    hideTasksList() {
+        this.props.tasksVisibility(false);
+    }
+
     render() {
         const iconPadding = {
             paddingLeft: "5px"
@@ -29,7 +43,11 @@ export class CategoriesTree extends React.Component {
                         </a>
                         <div className="list-group collapse" id="item-1-1">
                             <a href="#" className="list-group-item">Category 1.1.1</a>
-                            <a href="#" className="list-group-item">Category 1.1.2</a>
+                            <a href="#" className="list-group-item" 
+                               onFocus={() => this.showTasksList()}
+                               onBlur={() => this.hideTasksList()}>
+                                Category 1.1.2
+                            </a>
                             <a href="#" className="list-group-item">Category 1.1.3</a>
                         </div>
                         
