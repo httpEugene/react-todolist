@@ -2,12 +2,42 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { AddCategory } from './AddCategory';
+import { SubCategory } from './SubCategory';
 
 export class CategoriesTree extends React.Component {
     constructor() {
         super();
         this.state = {
-            tasksVisible: false
+            tasksVisible: false,
+            categories: [{
+                id: 1,
+                name: 'Category 1',
+                childrens: [{
+                    id: 11,
+                    name: 'Category 1.1',
+                    childrens: []
+                }]
+            }, {
+                id: 2,
+                name: 'Category 2',
+                childrens: [{
+                    id: 21,
+                    name: 'Category 2.1',
+                    childrens: [{
+                        id: 21,
+                        name: 'Category 2.1.1',
+                        childrens: []
+                    }, {
+                        id: 22,
+                        name: 'Category 2.1.2',
+                        childrens: []
+                    }]
+                }]
+            }, {
+                id: 3,
+                name: 'Category 3',
+                childrens: []
+            }]
         };
     }
     showTasksList() {
@@ -27,76 +57,21 @@ export class CategoriesTree extends React.Component {
             <div>
                 <AddCategory/>
                 <div className="list-group list-group-root">
-                    <a href="#item-1" className="list-group-item" data-toggle="collapse">
-                        <i className="glyphicon glyphicon-chevron-right"></i>
-                        Category 1
-                        <span className="glyphicon glyphicon-edit" style={iconPadding} aria-hidden="true"></span>
+                    {this.state.categories.map((category) => 
+                        <div className="root-category" key={category.id}>
+                            <a href={'#item-' + category.id} className="list-group-item" {...category.childrens.length ? {'data-toggle': 'collapse'} : {}}>
+                                {category.childrens.length ? (<i className="glyphicon glyphicon-chevron-right"></i>) : ''}
+                                {category.name}
+                                <span className="glyphicon glyphicon-edit" style={iconPadding} aria-hidden="true"></span>
 
-                        <div className="pull-right">
-                            <span className="glyphicon glyphicon-trash" style={iconPadding} aria-hidden="true"></span>
-                            <span className="glyphicon glyphicon-plus" style={iconPadding} aria-hidden="true"></span>
+                                <div className="pull-right">
+                                    <span className="glyphicon glyphicon-trash" style={iconPadding} aria-hidden="true"></span>
+                                    <span className="glyphicon glyphicon-plus" style={iconPadding} aria-hidden="true"></span>
+                                </div>
+                            </a> 
+                            {category.childrens.length ? (<SubCategory categories={category.childrens} parentId={category.id}/>) : ''}
                         </div>
-                    </a>
-                    <div className="list-group collapse" id="item-1">
-                        <a href="#item-1-1" className="list-group-item" data-toggle="collapse">
-                            <i className="glyphicon glyphicon-chevron-right"></i>Category 1.1
-                        </a>
-                        <div className="list-group collapse" id="item-1-1">
-                            <a href="#" className="list-group-item">Category 1.1.1</a>
-                            <a href="#" className="list-group-item" 
-                               onFocus={() => this.showTasksList()}
-                               onBlur={() => this.hideTasksList()}>
-                                Category 1.1.2
-                            </a>
-                            <a href="#" className="list-group-item">Category 1.1.3</a>
-                        </div>
-                        
-                        <a href="#item-1-2" className="list-group-item" data-toggle="collapse">
-                            <i className="glyphicon glyphicon-chevron-right"></i>Category 1.2
-                        </a>
-                        <div className="list-group collapse" id="item-1-2">
-                            <a href="#" className="list-group-item">Category 1.2.1</a>
-                            <a href="#" className="list-group-item">Category 1.2.2</a>
-                            <a href="#" className="list-group-item">Category 1.2.3</a>
-                        </div>                        
-                    </div>
-                    
-                    <a href="#item-2" className="list-group-item" data-toggle="collapse">
-                        <i className="glyphicon glyphicon-chevron-right"></i>Category 2
-                    </a>
-                    <div className="list-group collapse" id="item-2"> 
-                        <a href="#item-2-1" className="list-group-item" data-toggle="collapse">
-                            <i className="glyphicon glyphicon-chevron-right"></i>Category 2.1
-                        </a>
-                        <div className="list-group collapse" id="item-2-1">
-                            <a href="#" className="list-group-item">Category 2.1.1</a>
-                            <a href="#" className="list-group-item">Category 2.1.2</a>
-                            <a href="#" className="list-group-item">Category 2.1.3</a>
-                        </div>
-
-                        <a href="#item-2-2" className="list-group-item" data-toggle="collapse">
-                            <i className="glyphicon glyphicon-chevron-right"></i>Category 2.2
-                        </a>
-                        <div className="list-group collapse" id="item-2-2">
-                            <a href="#" className="list-group-item">Category 2.2.1</a>
-                            <a href="#" className="list-group-item">Category 2.2.2</a>
-                            <a href="#" className="list-group-item">Category 2.2.3</a>
-                        </div>
-                    </div>
-                    
-                    <a href="#item-3" className="list-group-item" data-toggle="collapse">
-                        <i className="glyphicon glyphicon-chevron-right"></i>Category 3
-                    </a>
-                    <div className="list-group collapse" id="item-3"> 
-                        <a href="#item-3-1" className="list-group-item" data-toggle="collapse">
-                            <i className="glyphicon glyphicon-chevron-right"></i>Category 3.1
-                        </a>
-                        <div className="list-group collapse" id="item-3-1">
-                            <a href="#" className="list-group-item">Category 3.1.1</a>
-                            <a href="#" className="list-group-item">Category 3.1.2</a>
-                            <a href="#" className="list-group-item">Category 3.1.3</a>
-                        </div>  
-                    </div>
+                    )}
                 </div>
             </div>
         );
