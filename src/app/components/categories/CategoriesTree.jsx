@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { AddCategory } from './AddCategory';
-import { SubCategory } from './SubCategory';
+import { AddCategory } from './AddCategory.jsx';
+import { SubCategory } from './SubCategory.jsx';
 
 export class CategoriesTree extends React.Component {
     constructor() {

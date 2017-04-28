@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Filter } from './Filter';
-import { ProgressBar } from './ProgressBar';
+import { Filter } from './Filter.jsx';
+import { ProgressBar } from './ProgressBar.jsx';
 
 export class Header extends React.Component {
     render() {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { AddItem } from './AddItem';
-import { Task } from './Task';
+import { AddItem } from './AddItem.jsx';
+import { Task } from './Task.jsx';
 
 export class TasksList extends React.Component {
     getTasksList() {
