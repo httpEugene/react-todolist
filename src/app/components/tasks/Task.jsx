@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Link } from 'react-router-dom'
 
 export class Task extends React.Component {
     render() {
@@ -9,7 +10,9 @@ export class Task extends React.Component {
                     <label>
                         <input type="checkbox"/> {this.props.task.text}
                     </label>
-                    <span className="pull-right glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    <Link to={"/task/edit/" + this.props.task.id}>
+                        <span className="pull-right glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </Link>
                 </div>
             </li>
         );

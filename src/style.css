@@ -12,15 +12,31 @@
   border-width: 1px 0 0 0;
 }
 
-.list-group.list-group-root > .root-category > .list-group-item:first-child {
+.list-group.list-group-root 
+> .root-category 
+> .list-of-subcategories 
+> .list-group-item:first-child {
   border-top-width: 0;
 }
 
-.list-group.list-group-root > .root-category > .sub-category > .list-group > .list-group-item {
+.list-group.list-group-root 
+> .root-category 
+> .sub-category 
+> .list-group 
+> .list-of-subcategories 
+> .list-group-item {
   padding-left: 30px;
 }
 
-.list-group.list-group-root > .root-category > .sub-category > .list-group > .sub-category > .list-group > .list-group-item {
+.list-group.list-group-root 
+> .root-category 
+> .sub-category 
+> .list-group 
+> .list-of-subcategories 
+> .sub-category 
+> .list-group 
+> .list-of-subcategories 
+> .list-group-item {
   padding-left: 65px;
 }
 
