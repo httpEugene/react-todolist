@@ -20,6 +20,7 @@
   "homepage": "https://github.com/httpEugene/react-todolist#readme",
   "dependencies": {
     "history": "^4.6.1",
+    "immutability-helper": "^2.2.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-modal": "^1.7.7",

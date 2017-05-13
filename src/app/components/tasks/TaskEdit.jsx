@@ -1,25 +1,72 @@
 import React from 'react';
 import { render } from 'react-dom';
+import update from 'immutability-helper';
 
 export class TaskEdit extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            task: this.props.tasks.find((task) => task.id === this.props.taskId)
+        };
+    }
+
+    checkboxToggle() {
+        this.setState((prevState) => update(prevState, {
+            task: {
+                done: {$set: !prevState.task.done}
+            }
+        }));
+    }
+
+    updatedDescription() {
+        this.setState((prevState) => update(prevState, {
+            task: {
+                description: {$set: this.refs.description.value}
+            }
+        }));
+    }
+
+    updatedTitle() {
+        this.setState((prevState) => update(prevState, {
+            task: {
+                text: {$set: this.refs.title.value}
+            }
+        }));
+    }
+
+    onTaskUpdate() {
+        this.props.updateTask(this.state.task);
+    }
+
     render() {
         return (
             <div>
-                <div className="row">
-                    <button class="btn btn-default" type="submit">Save changes</button>
-                    <button class="btn btn-default" type="submit">Cancel</button>
+                <div className="row pull-right padding-bottom">
+                    <button 
+                        className="btn btn-default" 
+                        type="submit"
+                        onClick={() => this.onTaskUpdate()}> Save changes
+                    </button>
+                    <button className="btn btn-default" type="submit">Cancel</button>
                 </div>
                 <div className="row">
-                    <input type="text" class="form-control" placeholder="Task text" 
-                       value={this.props.task.text}/>
-                    <div class="checkbox">
+                    <input type="text" className="form-control" placeholder="Task text" 
+                       value={this.state.task.text}
+                       ref="title"
+                       onChange={this.updatedTitle.bind(this)}/>
+                    <div className="checkbox">
                         <label>
-                            <input type="checkbox"/> Done
+                            <input type="checkbox" 
+                               checked={this.state.task.done} 
+                               onChange={() => this.checkboxToggle()}/> Done
                         </label>
                     </div>
                 </div>
                 <div className="row">
-                    <textarea class="form-control" rows="5"></textarea>
+                    <textarea className="form-control" rows="5"
+                       value={this.state.task.description}
+                       ref="description"
+                       onChange={this.updatedDescription.bind(this)}></textarea>
                 </div>
             </div>
         );
