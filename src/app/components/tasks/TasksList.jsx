@@ -13,7 +13,9 @@ export class TasksList extends React.Component {
         return (
             <div>
                 <div className="row">
-                    <AddItem/>
+                    <AddItem 
+                        addTask={this.props.addTask}
+                        categoryId={this.props.categoryId}/>
                 </div>
                 <div className="row">
                     <ul className="list-group">

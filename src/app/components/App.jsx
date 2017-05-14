@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory'
+import update from 'immutability-helper';
 
 import { Header } from './header/Header.jsx';
 import { CategoriesTree } from './categories/CategoriesTree.jsx';
@@ -105,6 +106,15 @@ export class App extends React.Component {
         this.history.goBack();
     }
 
+    addTask(task) {
+        this.setState((prevState) => update(prevState, {
+            tasks: {$push: [task]}
+        }));
+        // this.setState((state) => ({
+        //     tasks: state.tasks.concat([task])
+        // }));
+    }
+
     render() {
         return (
             <BrowserRouter>
@@ -122,9 +132,10 @@ export class App extends React.Component {
                                         <Route path="/category/:id" component={({ match }) => {
                                             const categoryId = match.params.id;
                                             return <TasksList 
-                                                    categories={this.state.categories} 
-                                                    tasks={this.state.tasks} 
-                                                    categoryId={categoryId}/>
+                                                        categories={this.state.categories} 
+                                                        tasks={this.state.tasks} 
+                                                        categoryId={categoryId}
+                                                        addTask={this.addTask.bind(this)}/>
                                         }} />
                                     </div>
                                 </div>

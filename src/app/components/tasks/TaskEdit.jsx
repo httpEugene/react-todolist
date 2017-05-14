@@ -68,9 +68,9 @@ export class TaskEdit extends React.Component {
                     </div>
                     <div className="row">
                         <input type="text" className="form-control" placeholder="Task text" 
-                        value={this.state.task.text}
-                        ref="title"
-                        onChange={this.updatedTitle.bind(this)}/>
+                            value={this.state.task.text}
+                            ref="title"
+                            onChange={this.updatedTitle.bind(this)}/>
                         <div className="checkbox">
                             <label>
                                 <input type="checkbox" 
