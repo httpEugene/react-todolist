@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory'
 
 import { Header } from './header/Header.jsx';
 import { CategoriesTree } from './categories/CategoriesTree.jsx';
@@ -8,39 +9,41 @@ import { TasksList } from './tasks/TasksList.jsx';
 import { TaskEdit } from './tasks/TaskEdit.jsx';
 
 export class App extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        this.history = createHistory();
         this.state = {
+            categoriesVisible: true,
             categories: [{
-                id: 1,
+                id: '1',
                 name: 'Category 1',
                 subCategories: [{
-                    id: 11,
+                    id: '11',
                     name: 'Category 1.1',
                     subCategories: []
                 }]
             }, {
-                id: 2,
+                id: '2',
                 name: 'Category 2',
                 subCategories: [{
-                    id: 21,
+                    id: '21',
                     name: 'Category 2.1',
                     subCategories: [{
-                        id: 211,
+                        id: '211',
                         name: 'Category 2.1.1',
                         subCategories: []
                     }, {
-                        id: 212,
+                        id: '212',
                         name: 'Category 2.1.2',
                         subCategories: []
                     }]
                 }, {
-                    id: 22,
+                    id: '22',
                     name: 'Category 2.2',
                     subCategories: []
                 }]
             }, {
-                id: 3,
+                id: '3',
                 name: 'Category 3',
                 subCategories: []
             }],
@@ -90,59 +93,53 @@ export class App extends React.Component {
         };
     }
 
-    setTasksVisibility(visibilityState) {
-        this.setState({
-            tasksVisible: visibilityState
-        })
-    }
-
     updateTask(task) {
-        console.log(task);
-        // this.setState((state) => ({
-        //     tasks: state.tasks.map((_task) => {
-        //         if (_task.id === task.id) {
-        //             return task;
-        //         }
-        //         return _task;
-        //     })
-        // }));
+        this.setState((state) => ({
+            tasks: state.tasks.map((_task) => {
+                if (_task.id === task.id) {
+                    return task;
+                }
+                return _task;
+            })
+        }));
+        this.history.goBack();
     }
 
     render() {
-        const tasksList = {
-            visible: false,
-            what: 'hey'
-        };
-
         return (
             <BrowserRouter>
-                <div className="container">
-                    <Header/>
-                    <div className="row">
-                        <div className="col-md-4">
-                            <CategoriesTree 
-                                tasksVisibility={this.setTasksVisibility.bind(this)}
-                                categories={this.state.categories} />
-                        </div>
-                        <div className="col-md-8">
-                            <Route path="/category/:id" component={({ match }) => {
-                                const categoryId = match.params.id;
-                                return <TasksList 
-                                        categories={this.state.categories} 
-                                        tasks={this.state.tasks} 
-                                        categoryId={categoryId}/>
-                            }} />
+                <Route path="/" component={({location}) => {
+                    return (
+                        <div className="container">
+                            <Header/>
+                            { !location.pathname.includes('/task/edit') && 
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <CategoriesTree
+                                            categories={this.state.categories} />
+                                    </div>
+                                    <div className="col-md-8">
+                                        <Route path="/category/:id" component={({ match }) => {
+                                            const categoryId = match.params.id;
+                                            return <TasksList 
+                                                    categories={this.state.categories} 
+                                                    tasks={this.state.tasks} 
+                                                    categoryId={categoryId}/>
+                                        }} />
+                                    </div>
+                                </div>
+                            }
                             <Route path="/task/edit/:id"  component={({ match }) => {
                                 const taskId = match.params.id;
                                 return <TaskEdit
-                                        categories={this.state.categories} 
-                                        tasks={this.state.tasks} 
-                                        taskId={taskId}
-                                        updateTask={this.updateTask.bind(this)}/>
+                                            categories={this.state.categories} 
+                                            tasks={this.state.tasks} 
+                                            taskId={taskId}
+                                            updateTask={this.updateTask.bind(this)}/>
                             }} />
                         </div>
-                    </div>
-                </div>
+                    )
+                }}/>
             </BrowserRouter>
         );
     }
