@@ -110,9 +110,23 @@ export class App extends React.Component {
         this.setState((prevState) => update(prevState, {
             tasks: {$push: [task]}
         }));
-        // this.setState((state) => ({
-        //     tasks: state.tasks.concat([task])
-        // }));
+    }
+
+    addCategory(category) {
+        this.setState((prevState) => update(prevState, {
+            categories: {$push: [category]}
+        }));
+    }
+
+    deleteCategory(id) {
+        const index = this.state.categories.map(({_id}) => _id).indexOf(id);
+        this.setState((prevState) => update(prevState, {
+            categories: {$splice: [[index, 1]]}
+        }));
+    }
+
+    addNewSubCategory(id) {
+        
     }
 
     render() {
@@ -121,12 +135,15 @@ export class App extends React.Component {
                 <Route path="/" component={({location}) => {
                     return (
                         <div className="container">
-                            <Header/>
+                            <Header tasks={this.state.tasks}/>
                             { !location.pathname.includes('/task/edit') && 
                                 <div className="row">
                                     <div className="col-md-4">
                                         <CategoriesTree
-                                            categories={this.state.categories} />
+                                            categories={this.state.categories} 
+                                            addCategory={this.addCategory.bind(this)} 
+                                            deleteCategory={this.deleteCategory.bind(this)} 
+                                            addNewSubCategory={this.addNewSubCategory.bind(this)} />
                                     </div>
                                     <div className="col-md-8">
                                         <Route path="/category/:id" component={({ match }) => {

@@ -21,7 +21,7 @@ export class Header extends React.Component {
                     </div>
                 </div>
                 <div className="row" style={progressBarRowStyle}>
-                    <ProgressBar/>
+                    <ProgressBar tasks={this.props.tasks}/>
                 </div>
             </div>
         );

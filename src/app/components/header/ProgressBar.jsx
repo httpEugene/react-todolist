@@ -2,9 +2,20 @@ import React from 'react';
 import { render } from 'react-dom';
 
 export class ProgressBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.completedTasks = 0;
+        this.props.tasks.forEach((task) => {
+            if(task.done) {
+                this.completedTasks++;
+            }
+        });
+        this.completedTasksPercent = this.completedTasks * 100 / this.props.tasks.length;
+    }
+
     render() {
         const progressBarStyle = {
-            width: "60%"
+            width: `${this.completedTasksPercent}%`
         };
 
         return (
@@ -12,7 +23,6 @@ export class ProgressBar extends React.Component {
                 <div className="progress-bar" 
                     style={progressBarStyle}
                     role="progressbar" 
-                    aria-valuenow="60" 
                     aria-valuemin="0" 
                     aria-valuemax="100">
                 </div>
