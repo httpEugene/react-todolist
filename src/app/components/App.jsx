@@ -132,7 +132,7 @@ export class App extends React.Component {
                 return cat;
             }
             if (cat.subCategories.length) {
-                this.processSubCategories(id, categoryName, cat.subCategories)
+                this.processNestedCategories(id, categoryName, cat.subCategories)
             }
             return cat;
         });
@@ -141,20 +141,43 @@ export class App extends React.Component {
         }));
     }
 
-    processSubCategories(id, categoryName, categories) {
+    processNestedCategories(id, categoryName, categories) {
         categories.forEach((subCat) => {
             if (subCat.id === id) {
                 subCat.name = categoryName;
-                return subCat;
             }
             if(subCat.subCategories.length) {
-                this.processSubCategories(id, categoryName, subCat.subCategories);
+                this.processNestedCategories(id, categoryName, subCat.subCategories);
             }
         }); 
     }
 
     addNestedCategory(id, category) {
-        
+        const categories = this.state.categories.map((cat) => {
+            if (cat.id === id) {
+                cat.subCategories.push(category);
+                return cat;
+            }
+            if (cat.subCategories.length) {
+                this.processAddingNestedCategory(id, category, cat.subCategories)
+            }
+            return cat;
+        });
+        this.setState((prevState) => update(prevState, {
+            categories: {$set: categories}
+        }));
+    }
+
+    processAddingNestedCategory(id, category,categories) {
+        categories.forEach((subCat) => {
+            if (subCat.id === id) {
+                subCat.subCategories.push(category);
+                return subCat;
+            }
+            if(subCat.subCategories.length) {
+                this.processAddingNestedCategory(id, category, subCat.subCategories);
+            }
+        });
     }
 
     render() {

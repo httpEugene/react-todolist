@@ -28,11 +28,7 @@ export class AddOrUpdateCategory extends React.Component {
     }
 
     addCategory() {
-        const category = {
-            id: Math.floor(Math.random() * 10000) + '',
-            name: this.refs.name.value,
-            subCategories: []
-        };
+        const category = this.generateNewCategory();
         this.props.addCategory(category);
         this.name = '';
     }
@@ -50,7 +46,8 @@ export class AddOrUpdateCategory extends React.Component {
     }
 
     addNestedCategory() {
-
+        const category = this.generateNewCategory();
+        this.props.addNestedCategory(this.props.categoryId, category);
     }
 
     processClick() {
@@ -61,6 +58,14 @@ export class AddOrUpdateCategory extends React.Component {
         } else if (this.props.action === this.actions.ADD_NESTED) {
             this.addNestedCategory();
         }
+    }
+
+    generateNewCategory() {
+        return {
+            id: Math.floor(Math.random() * 10000) + '',
+            name: this.refs.name.value,
+            subCategories: []
+        };
     }
 
     render() {
