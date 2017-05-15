@@ -55,6 +55,7 @@ export class TaskEdit extends React.Component {
                 <div className="col-md-4">
                     <CategoriesToChoose
                         categories={this.props.categories} 
+                        action='ADD'
                         categoryChosen={this.categoryChosen.bind(this)}/>
                 </div>
                 <div className="col-md-8">

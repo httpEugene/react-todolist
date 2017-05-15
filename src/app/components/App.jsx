@@ -125,7 +125,35 @@ export class App extends React.Component {
         }));
     }
 
-    addNewSubCategory(id) {
+    updateCategory(id, categoryName) {
+        const categories = this.state.categories.map((cat) => {
+            if (cat.id === id) {
+                cat.name = categoryName;
+                return cat;
+            }
+            if (cat.subCategories.length) {
+                this.processSubCategories(id, categoryName, cat.subCategories)
+            }
+            return cat;
+        });
+        this.setState((prevState) => update(prevState, {
+            categories: {$set: categories}
+        }));
+    }
+
+    processSubCategories(id, categoryName, categories) {
+        categories.forEach((subCat) => {
+            if (subCat.id === id) {
+                subCat.name = categoryName;
+                return subCat;
+            }
+            if(subCat.subCategories.length) {
+                this.processSubCategories(id, categoryName, subCat.subCategories);
+            }
+        }); 
+    }
+
+    addNestedCategory(id, category) {
         
     }
 
@@ -143,7 +171,8 @@ export class App extends React.Component {
                                             categories={this.state.categories} 
                                             addCategory={this.addCategory.bind(this)} 
                                             deleteCategory={this.deleteCategory.bind(this)} 
-                                            addNewSubCategory={this.addNewSubCategory.bind(this)} />
+                                            updateCategory={this.updateCategory.bind(this)}
+                                            addNestedCategory={this.addNestedCategory.bind(this)} />
                                     </div>
                                     <div className="col-md-8">
                                         <Route path="/category/:id" component={({ match }) => {

@@ -16,10 +16,10 @@ export class AddItem extends React.Component {
 
     render() {
         return (
-            <div className="input-group pull-right col-xs-7">
-                <input type="text" className="form-control" placeholder="Enter task name" ref="text"/>
-                <span className="input-group-btn">
-                    <button className="btn btn-default" type="button"
+            <div className="input-group pull-right col-xs-7 position-inherit">
+                <input type="text" className="form-control position-inherit" placeholder="Enter task name" ref="text"/>
+                <span className="input-group-btn position-inherit">
+                    <button className="btn btn-default position-inherit" type="button"
                         onClick={() => this.addTask()}>
                             Add
                     </button>
