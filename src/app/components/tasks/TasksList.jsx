@@ -5,17 +5,22 @@ import { AddItem } from './AddItem.jsx';
 import { Task } from './Task.jsx';
 
 export class TasksList extends React.Component {
-    getCategoryTasksList() {
-        return this.props.tasks.filter((task) =>  task.categoryId === this.props.categoryId);
+    getCategoryTasksList(nextProps) {
+        return this.props.tasks.filter((task) =>  task.categoryId === this.props.routeParams.id);        
     }
+
+    shouldComponentUpdate (nextProps) {
+        console.log(nextProps);
+        return true;
+  }
 
     render() {
         return (
             <div>
                 <div className="row">
                     <AddItem 
-                        addTask={this.props.addTask}
-                        categoryId={this.props.categoryId}/>
+                        addTask={this.props.route.addTask}
+                        categoryId={this.props.routeParams.id}/>
                 </div>
                 <div className="row">
                     <ul className="list-group">

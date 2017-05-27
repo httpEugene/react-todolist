@@ -22,7 +22,7 @@ var config = {
             }
         ]
     },
-    devtool: 'eval'
+    devtool: 'source-map'
 };
 
 module.exports = config;

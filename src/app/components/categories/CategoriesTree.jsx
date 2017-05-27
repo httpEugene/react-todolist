@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { render } from 'react-dom';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import { AddOrUpdateCategory } from './AddOrUpdateCategory.jsx';
 import { SubCategory } from './SubCategory.jsx';

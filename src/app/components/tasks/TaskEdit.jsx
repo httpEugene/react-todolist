@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 import update from 'immutability-helper';
-import { BrowserHistory } from 'react-router-dom';
 
 import { CategoriesToChoose } from '../categories/CategoriesToChoose.jsx';
 
@@ -9,7 +8,7 @@ export class TaskEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            task: this.props.tasks.find((task) => task.id === this.props.taskId)
+            task: this.props.tasks.find((task) => task.id === this.props.routeParams.id)
         };
     }
 
@@ -38,7 +37,7 @@ export class TaskEdit extends React.Component {
     }
 
     onTaskUpdate() {
-        this.props.updateTask(this.state.task);
+        this.props.route.updateTask(this.state.task);
     }
 
     categoryChosen(id) {
@@ -55,7 +54,6 @@ export class TaskEdit extends React.Component {
                 <div className="col-md-4">
                     <CategoriesToChoose
                         categories={this.props.categories} 
-                        action='ADD'
                         categoryChosen={this.categoryChosen.bind(this)}/>
                 </div>
                 <div className="col-md-8">

@@ -1,18 +1,18 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory'
+import { hashHistory, Route, Router } from 'react-router';
+// import createHistory from 'history/createBrowserHistory'
 import update from 'immutability-helper';
 
 import { Header } from './header/Header.jsx';
 import { CategoriesTree } from './categories/CategoriesTree.jsx';
 import { TasksList } from './tasks/TasksList.jsx';
 import { TaskEdit } from './tasks/TaskEdit.jsx';
+import { Container } from './Container.jsx';
 
 export class App extends React.Component {
     constructor(props) {
         super(props);
-        this.history = createHistory();
         this.state = {
             categoriesVisible: true,
             categories: [{
@@ -90,8 +90,15 @@ export class App extends React.Component {
                 description: 'description',
                 categoryId: '212',
                 done: true
-            }]
+            }],
+            tasksListKey: 0,
+            taskEditKey: 0
         };
+    }
+
+    shouldComponentUpdate (nextProps) {
+        console.log('App', nextProps);
+        return true;
     }
 
     updateTask(task) {
@@ -103,12 +110,13 @@ export class App extends React.Component {
                 return _task;
             })
         }));
-        this.history.goBack();
+        browserHistory.goBack();
     }
 
     addTask(task) {
         this.setState((prevState) => update(prevState, {
-            tasks: {$push: [task]}
+            tasks: {$push: [task]},
+            tasksListKey: {$set: Math.random()}
         }));
     }
 
@@ -180,47 +188,68 @@ export class App extends React.Component {
         });
     }
 
+    getRoutes() {
+        return {
+            path: '/',
+            component: Container,
+            tasks: this.state.tasks,
+            categories: this.state.categories,
+            addCategory: this.addCategory.bind(this),
+            deleteCategory: this.deleteCategory.bind(this),
+            updateCategory: this.updateCategory.bind(this),
+            addNestedCategory: this.addNestedCategory.bind(this),
+            addTask: this.addTask.bind(this),
+            childRoutes: [{
+                path: '/category/:id',
+                component: TasksList,
+                // tasks: this.state.tasks,
+                // categories: this.state.categories,
+                // addTask: this.addTask.bind(this),
+                key: this.state.tasksListKey
+            }, {
+                path: '/task/edit/:id',
+                component: TaskEdit,
+                // tasks: this.state.tasks,
+                // categories: this.state.categories,
+                updateTask: this.updateTask.bind(this),
+                key: this.state.taskEditKey
+            }]
+        };
+        /*return (
+            <Route path="/" component={Container} 
+                    tasks={this.state.tasks}
+                    categories={this.state.categories}
+                    addCategory={this.addCategory.bind(this)} 
+                    deleteCategory={this.deleteCategory.bind(this)} 
+                    updateCategory={this.updateCategory.bind(this)}
+                    addNestedCategory={this.addNestedCategory.bind(this)}
+                    onChange={(prevState, nextState, replace, callback) => {
+                        console.log('/ = ', prevState, nextState);
+                        callback();
+                    }}>
+                    <Route path="/category/:id" component={TasksList} 
+                        categories={this.state.categories} 
+                        tasks={this.state.tasks}
+                        addTask={this.addTask.bind(this)}
+                        onChange={(prevState, nextState, replace, callback) => {
+                            console.log('/category/:id = ', prevState, nextState);
+                            callback();
+                        }}/>
+                    <Route path="/task/edit/:id"  component={TaskEdit}
+                        categories={this.state.categories} 
+                        tasks={this.state.tasks}
+                        updateTask={this.updateTask.bind(this)}
+                        onChange={(prevState, nextState, replace, callback) => {
+                            console.log('/task/edit/:id = ', prevState, nextState);
+                            callback();
+                        }}/>
+                </Route>
+        );*/
+    }
+
     render() {
         return (
-            <BrowserRouter>
-                <Route path="/" component={({location}) => {
-                    return (
-                        <div className="container">
-                            <Header tasks={this.state.tasks}/>
-                            { !location.pathname.includes('/task/edit') && 
-                                <div className="row">
-                                    <div className="col-md-4">
-                                        <CategoriesTree
-                                            categories={this.state.categories} 
-                                            addCategory={this.addCategory.bind(this)} 
-                                            deleteCategory={this.deleteCategory.bind(this)} 
-                                            updateCategory={this.updateCategory.bind(this)}
-                                            addNestedCategory={this.addNestedCategory.bind(this)} />
-                                    </div>
-                                    <div className="col-md-8">
-                                        <Route path="/category/:id" component={({ match }) => {
-                                            const categoryId = match.params.id;
-                                            return <TasksList 
-                                                        categories={this.state.categories} 
-                                                        tasks={this.state.tasks} 
-                                                        categoryId={categoryId}
-                                                        addTask={this.addTask.bind(this)}/>
-                                        }} />
-                                    </div>
-                                </div>
-                            }
-                            <Route path="/task/edit/:id"  component={({ match }) => {
-                                const taskId = match.params.id;
-                                return <TaskEdit
-                                            categories={this.state.categories} 
-                                            tasks={this.state.tasks} 
-                                            taskId={taskId}
-                                            updateTask={this.updateTask.bind(this)}/>
-                            }} />
-                        </div>
-                    )
-                }}/>
-            </BrowserRouter>
+            <Router history={hashHistory} routes={this.getRoutes()} />
         );
     }
 }

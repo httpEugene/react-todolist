@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import { SubCategoriesToChoose } from './SubCategoriesToChoose.jsx';
 
