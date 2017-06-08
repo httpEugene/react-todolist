@@ -6,5 +6,10 @@ pipeline {
         git(url: 'https://github.com/httpEugene/react-todolist.git', branch: 'master')
       }
     }
+    stage('Build') {
+      steps {
+        sh 'sh \'node -v\''
+      }
+    }
   }
 }
