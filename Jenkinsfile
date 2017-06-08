@@ -9,7 +9,14 @@ pipeline {
     stage('Build') {
       steps {
         sh '''node -v
-npm --version'''
+npm --version
+npm install
+npm build'''
+      }
+    }
+    stage('Cleanup') {
+      steps {
+        cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true, cleanupMatrixParent: true, deleteDirs: true)
       }
     }
   }
